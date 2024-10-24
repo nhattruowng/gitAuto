@@ -23,7 +23,6 @@ namespace GitAutoSetUp
         private void newbranch_Load(object sender, EventArgs e)
         {
             var inf = GitHelper.LoadCredentials();
-
             txtname.Text = inf.Username != null ? inf.Username : "N/A";
             txtpass.Text = inf.Password != null ? inf.Password : "N/A";
         }
