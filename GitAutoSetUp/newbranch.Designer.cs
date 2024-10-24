@@ -34,7 +34,7 @@ namespace GitAutoSetUp
             this.txtname = new System.Windows.Forms.TextBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnluu = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.username = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtpass = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -67,17 +67,17 @@ namespace GitAutoSetUp
             this.btnluu.UseVisualStyleBackColor = true;
             this.btnluu.Click += new System.EventHandler(this.btnluu_Click);
             // 
-            // label2
+            // username
             // 
-            this.label2.Font = new System.Drawing.Font("Arial Narrow", 9.857143F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label2.Location = new System.Drawing.Point(12, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 32);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "username";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label2.UseMnemonic = false;
+            this.username.Font = new System.Drawing.Font("Arial Narrow", 9.857143F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.username.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.username.Location = new System.Drawing.Point(12, 12);
+            this.username.Name = "username";
+            this.username.Size = new System.Drawing.Size(121, 32);
+            this.username.TabIndex = 13;
+            this.username.Text = "email";
+            this.username.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.username.UseMnemonic = false;
             // 
             // label1
             // 
@@ -119,7 +119,7 @@ namespace GitAutoSetUp
             this.Controls.Add(this.txtpass);
             this.Controls.Add(this.btnluu);
             this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.username);
             this.Controls.Add(this.txtname);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -134,7 +134,7 @@ namespace GitAutoSetUp
         private System.Windows.Forms.TextBox txtpass;
         private System.Windows.Forms.TextBox textBox2;
 
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label username;
         private System.Windows.Forms.TextBox txtname;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnluu;
