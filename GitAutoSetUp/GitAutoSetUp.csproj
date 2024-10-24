@@ -286,6 +286,7 @@
         <Compile Include="Form1.Designer.cs">
             <DependentUpon>Form1.cs</DependentUpon>
         </Compile>
+        <Compile Include="GitHelper.cs" />
         <Compile Include="newbranch.cs">
           <SubType>Form</SubType>
         </Compile>
