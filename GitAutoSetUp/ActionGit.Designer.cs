@@ -51,11 +51,9 @@ namespace GitAutoSetUp
             this.btnchange = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnPull = new System.Windows.Forms.Button();
-            this.toolStripDropDownMenu1 = new System.Windows.Forms.ToolStripDropDownMenu();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.treeBranch = new System.Windows.Forms.ComboBox();
+            this.btnauthen = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            this.toolStripDropDownMenu1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -278,17 +276,6 @@ namespace GitAutoSetUp
             this.btnPull.UseVisualStyleBackColor = true;
             this.btnPull.Click += new System.EventHandler(this.btnPull_Click);
             // 
-            // toolStripDropDownMenu1
-            // 
-            this.toolStripDropDownMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripMenuItem1 });
-            this.toolStripDropDownMenu1.Name = "toolStripDropDownMenu1";
-            this.toolStripDropDownMenu1.Size = new System.Drawing.Size(74, 26);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(73, 22);
-            // 
             // treeBranch
             // 
             this.treeBranch.FormattingEnabled = true;
@@ -298,11 +285,24 @@ namespace GitAutoSetUp
             this.treeBranch.TabIndex = 21;
             this.treeBranch.SelectedIndexChanged += new System.EventHandler(this.treeBranch_SelectedIndexChanged_1);
             // 
+            // btnauthen
+            // 
+            this.btnauthen.AllowDrop = true;
+            this.btnauthen.AutoEllipsis = true;
+            this.btnauthen.Location = new System.Drawing.Point(901, 12);
+            this.btnauthen.Name = "btnauthen";
+            this.btnauthen.Size = new System.Drawing.Size(73, 35);
+            this.btnauthen.TabIndex = 22;
+            this.btnauthen.Text = "aut";
+            this.btnauthen.UseVisualStyleBackColor = true;
+            this.btnauthen.Click += new System.EventHandler(this.btnauthen_Click);
+            // 
             // ActionGit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(986, 633);
+            this.Controls.Add(this.btnauthen);
             this.Controls.Add(this.treeBranch);
             this.Controls.Add(this.btnPull);
             this.Controls.Add(this.groupBox1);
@@ -319,20 +319,17 @@ namespace GitAutoSetUp
             this.Load += new System.EventHandler(this.ActionGit_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.toolStripDropDownMenu1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button btnauthen;
 
         private System.Windows.Forms.Button btnCommit;
 
         private System.Windows.Forms.Button btnClone;
         
         private System.Windows.Forms.ComboBox treeBranch;
-
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-
-        private System.Windows.Forms.ToolStripDropDownMenu toolStripDropDownMenu1;
 
         private System.Windows.Forms.Button btnchange;
 

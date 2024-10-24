@@ -95,8 +95,9 @@ namespace GitAutoSetUp
 
         private void btnpush_Click(object sender, EventArgs e)
         {
-            if (chbAddAll.Visible == false)
-                messiger.Text += "Thông báo: chưa lưu thay đôi" + Environment.NewLine;
+            
+            var inf = GitHelper.LoadCredentials();
+            messiger.Text += GitHelper.PushCode(_pathForder, inf.Password, inf.Username, branch);
         }
 
         private void chbAddAll_CheckedChanged(object sender, EventArgs e)
@@ -159,6 +160,11 @@ namespace GitAutoSetUp
         private void btnCommit_Click(object sender, EventArgs e)
         {
             messiger.Text += GitHelper.CommitChanges(_pathForder, txtCommit.Text, chbAddAll.Checked);
+        }
+
+        private void btnauthen_Click(object sender, EventArgs e)
+        {
+            new newbranch().ShowDialog();
         }
     }
 }   

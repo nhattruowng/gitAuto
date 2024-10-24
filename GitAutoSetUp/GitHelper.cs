@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CredentialManagement;
 using LibGit2Sharp;
 
 namespace GitAutoSetUp
@@ -163,7 +164,7 @@ namespace GitAutoSetUp
 
                     if (string.IsNullOrEmpty(authorName) || string.IsNullOrEmpty(authorEmail))
                     {
-                        return "Không thể lấy thông tin người dùng từ Git config.";
+                        return "Không thể lấy thông tin người dùng từ Git config." + Environment.NewLine;
                     }
 
                     var author = new Signature(authorName, authorEmail, DateTime.Now);
@@ -171,12 +172,51 @@ namespace GitAutoSetUp
 
                     var commit = repo.Commit(commitMessage, author, committer);
 
-                    return $"Commit thành công với mã commit: {commit.Sha}";
+                    return $"Commit thành công với mã commit: {commit.Sha}" + Environment.NewLine;
                 }
             }
             catch (Exception ex)
             {
                 return $"Lỗi khi commit: {ex.Message}";
+            }
+        }
+        
+        public static string PushCode(string repoPath, string username, string email, string branchName)
+        {
+            try
+            {
+                using (var repo = new Repository(repoPath))
+                {
+                    // Kiểm tra xem branch có tồn tại không
+                    var branch = repo.Branches[branchName];
+                    if (branch == null)
+                    {
+                        return $"Branch '{branchName}' không tồn tại trong repository.";
+                    }
+
+                    // Set người dùng và committer
+                    var author = new Signature(username, email, DateTime.Now);
+                    var committer = author;
+
+                    // Commit code (nếu có thay đổi)
+                    Commands.Stage(repo, "*");
+                    repo.Commit("Auto commit by GitHelper", author, committer);
+
+                    // Thực hiện push lên nhánh đã chọn
+                    var options = new PushOptions
+                    {
+                        CredentialsProvider = (_url, _user, _cred) =>
+                            new UsernamePasswordCredentials { Username = username, Password = email } // Sử dụng email làm password cho mục đích minh họa, bạn nên dùng password hoặc token.
+                    };
+
+                    repo.Network.Push(branch, options);
+
+                    return $"Push thành công lên nhánh '{branchName}'.";
+                }
+            }
+            catch (LibGit2SharpException ex)
+            {
+                return $"Lỗi khi push: {ex.Message}";
             }
         }
         
@@ -211,6 +251,48 @@ namespace GitAutoSetUp
             return log;
         }
         
+        public static string SaveCredentials(string username, string password)
+        {
+            try
+            {
+                using (var cm = new Credential())
+                {
+                    cm.Target = "GitCredentials"; 
+                    cm.Username = username;
+                    cm.Password = password;
+                    cm.Save();
+                }
+
+                return "Lưu thông tin đăng nhập thành công" + Environment.NewLine;
+            }
+            catch (Exception ex)
+            {
+                return $"Lỗi khi lưu thông tin đăng nhập: {ex.Message}" + Environment.NewLine;
+            }
+        }
+
+        public static (string Username, string Password) LoadCredentials()
+        {
+            try
+            {
+                using (var cm = new Credential())
+                {
+                    cm.Target = "GitCredentials";
+                    if (cm.Load())
+                    {
+                        return (cm.Username, cm.Password);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tải thông tin đăng nhập: {ex.Message}");
+            }
+    
+            return (null, null); // Trả về null nếu không tải được
+        }
+
+
         
 
         private static string GetRepoNameFromUrl(string url)
