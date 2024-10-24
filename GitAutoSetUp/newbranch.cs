@@ -5,11 +5,9 @@ namespace GitAutoSetUp
 {
     public partial class newbranch : Form
     {
-        private string _pathFolder;
-        public newbranch(string pathFolder)
+        public newbranch()
         {
             InitializeComponent();
-            _pathFolder = pathFolder;
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -17,9 +15,17 @@ namespace GitAutoSetUp
             this.Close();
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void btnluu_Click(object sender, EventArgs e)
         {
-            Console.Write(_pathFolder);
+            textBox2.Text += GitHelper.SaveCredentials(username: txtname.Text, password: txtpass.Text);
+        }
+
+        private void newbranch_Load(object sender, EventArgs e)
+        {
+            var inf = GitHelper.LoadCredentials();
+
+            txtname.Text = inf.Username != null ? inf.Username : "N/A";
+            txtpass.Text = inf.Password != null ? inf.Password : "N/A";
         }
     }
 }
