@@ -97,7 +97,7 @@ namespace GitAutoSetUp
         {
             
             var inf = GitHelper.LoadCredentials();
-            messiger.Text += GitHelper.PushChanges(_pathForder,branch, inf.Password, inf.Username);
+            // messiger.Text += GitHelper.PushChanges(_pathForder,branch, inf.Password, inf.Username);
         }
 
         private void chbAddAll_CheckedChanged(object sender, EventArgs e)
@@ -165,6 +165,11 @@ namespace GitAutoSetUp
         private void btnauthen_Click(object sender, EventArgs e)
         {
             new newbranch().ShowDialog();
+        }
+
+        private void btnSsh_Click(object sender, EventArgs e)
+        {
+            new SSHkeyGenarator().ShowDialog();
         }
     }
 }   

@@ -16,6 +16,11 @@ namespace GitAutoSetUp
             new ActionGit().Show();
             this.Hide();
         }
+
+        private void btnInstall_Click(object sender, EventArgs e)
+        {
+            new CheckGit().ShowDialog();
+        }
     }
 }
 
