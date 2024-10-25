@@ -97,7 +97,7 @@ namespace GitAutoSetUp
         {
             
             var inf = GitHelper.LoadCredentials();
-            messiger.Text += GitHelper.PushCode(_pathForder, inf.Password, inf.Username, branch);
+            messiger.Text += GitHelper.PushChanges(_pathForder,branch, inf.Password, inf.Username);
         }
 
         private void chbAddAll_CheckedChanged(object sender, EventArgs e)

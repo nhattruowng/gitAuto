@@ -181,44 +181,49 @@ namespace GitAutoSetUp
             }
         }
         
-        public static string PushCode(string repoPath, string username, string email, string branchName)
+        public static string PushChanges(string repoPath, string branchName, string username, string personalAccessToken)
         {
+            string resultMessage = "";
+    
             try
             {
                 using (var repo = new Repository(repoPath))
                 {
-                    // Kiểm tra xem branch có tồn tại không
+                    var remote = repo.Network.Remotes["origin"];
+                    var pushOptions = new PushOptions
+                    {
+                        CredentialsProvider = (url, user, cred) =>
+                            new UsernamePasswordCredentials { Username = username, Password = personalAccessToken }
+                    };
+
                     var branch = repo.Branches[branchName];
                     if (branch == null)
                     {
-                        return $"Branch '{branchName}' không tồn tại trong repository.";
+                        return $"Branch {branchName} không tồn tại.";
                     }
 
-                    // Set người dùng và committer
-                    var author = new Signature(username, email, DateTime.Now);
-                    var committer = author;
-
-                    // Commit code (nếu có thay đổi)
-                    Commands.Stage(repo, "*");
-                    repo.Commit("Auto commit by GitHelper", author, committer);
-
-                    // Thực hiện push lên nhánh đã chọn
-                    var options = new PushOptions
+                    // Kiểm tra và thiết lập upstream branch nếu cần
+                    if (branch.TrackedBranch == null)
                     {
-                        CredentialsProvider = (_url, _user, _cred) =>
-                            new UsernamePasswordCredentials { Username = username, Password = email } // Sử dụng email làm password cho mục đích minh họa, bạn nên dùng password hoặc token.
-                    };
+                        repo.Branches.Update(branch, b => b.Remote = remote.Name, b => b.UpstreamBranch = branch.CanonicalName);
+                        resultMessage += $"Thiết lập upstream cho nhánh {branchName}. ";
+                    }
 
-                    repo.Network.Push(branch, options);
-
-                    return $"Push thành công lên nhánh '{branchName}'.";
+                    // Push thay đổi lên remote
+                    repo.Network.Push(branch, pushOptions);
+                    resultMessage += $"Push thành công lên nhánh {branchName}!";
                 }
             }
-            catch (LibGit2SharpException ex)
+            catch (Exception ex)
             {
                 return $"Lỗi khi push: {ex.Message}";
             }
+
+            return resultMessage;
         }
+
+
+
         
         public static (string authorName, string authorEmail) GetGitUserInfo(string repoPath)
         {
@@ -251,7 +256,7 @@ namespace GitAutoSetUp
             return log;
         }
         
-        public static string SaveCredentials(string username, string password)
+        public static string SaveCredentials(string username, string email, string token)
         {
             try
             {
@@ -259,7 +264,8 @@ namespace GitAutoSetUp
                 {
                     cm.Target = "GitCredentials"; 
                     cm.Username = username;
-                    cm.Password = password;
+                    cm.Password = token;  
+                    cm.Description = email;  
                     cm.Save();
                 }
 
@@ -271,7 +277,8 @@ namespace GitAutoSetUp
             }
         }
 
-        public static (string Username, string Password) LoadCredentials()
+
+        public static (string Username, string Password, string token) LoadCredentials()
         {
             try
             {
@@ -280,7 +287,7 @@ namespace GitAutoSetUp
                     cm.Target = "GitCredentials";
                     if (cm.Load())
                     {
-                        return (cm.Username, cm.Password);
+                        return (cm.Username,cm.Description,cm.Password);
                     }
                 }
             }
@@ -289,7 +296,7 @@ namespace GitAutoSetUp
                 Console.WriteLine($"Lỗi khi tải thông tin đăng nhập: {ex.Message}");
             }
     
-            return (null, null); // Trả về null nếu không tải được
+            return (null, null,null); // Trả về null nếu không tải được
         }
 
 
