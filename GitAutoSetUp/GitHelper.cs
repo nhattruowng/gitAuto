@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using CredentialManagement;
@@ -181,46 +182,46 @@ namespace GitAutoSetUp
             }
         }
         
-        public static string PushChanges(string repoPath, string branchName, string username, string personalAccessToken)
-        {
-            string resultMessage = "";
-    
-            try
-            {
-                using (var repo = new Repository(repoPath))
-                {
-                    var remote = repo.Network.Remotes["origin"];
-                    var pushOptions = new PushOptions
-                    {
-                        CredentialsProvider = (url, user, cred) =>
-                            new UsernamePasswordCredentials { Username = username, Password = personalAccessToken }
-                    };
-
-                    var branch = repo.Branches[branchName];
-                    if (branch == null)
-                    {
-                        return $"Branch {branchName} không tồn tại.";
-                    }
-
-                    // Kiểm tra và thiết lập upstream branch nếu cần
-                    if (branch.TrackedBranch == null)
-                    {
-                        repo.Branches.Update(branch, b => b.Remote = remote.Name, b => b.UpstreamBranch = branch.CanonicalName);
-                        resultMessage += $"Thiết lập upstream cho nhánh {branchName}. ";
-                    }
-
-                    // Push thay đổi lên remote
-                    repo.Network.Push(branch, pushOptions);
-                    resultMessage += $"Push thành công lên nhánh {branchName}!";
-                }
-            }
-            catch (Exception ex)
-            {
-                return $"Lỗi khi push: {ex.Message}";
-            }
-
-            return resultMessage;
-        }
+        // public static string PushChanges(string repoPath, string branchName, string username)
+        // {
+        //     string resultMessage = "";
+        //
+        //     try
+        //     {
+        //         using (var repo = new Repository(repoPath))
+        //         {
+        //             var remote = repo.Network.Remotes["origin"];
+        //             var pushOptions = new PushOptions
+        //             {
+        //                 CredentialsProvider = (url, user, cred) =>
+        //                     new UsernamePasswordCredentials { Username = username, Password = PromptForPassword() } // Gọi hàm nhập mật khẩu
+        //             };
+        //
+        //             var branch = repo.Branches[branchName];
+        //             if (branch == null)
+        //             {
+        //                 return $"Branch {branchName} không tồn tại.";
+        //             }
+        //
+        //             // Kiểm tra và thiết lập upstream branch nếu cần
+        //             if (branch.TrackedBranch == null)
+        //             {
+        //                 repo.Branches.Update(branch, b => b.Remote = remote.Name, b => b.UpstreamBranch = branch.CanonicalName);
+        //                 resultMessage += $"Thiết lập upstream cho nhánh {branchName}. ";
+        //             }
+        //
+        //             // Push thay đổi lên remote
+        //             repo.Network.Push(branch, pushOptions);
+        //             resultMessage += $"Push thành công lên nhánh {branchName}!";
+        //         }
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return $"Lỗi khi push: {ex.Message}";
+        //     }
+        //
+        //     return resultMessage;
+        // }
 
 
 
@@ -293,12 +294,76 @@ namespace GitAutoSetUp
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Lỗi khi tải thông tin đăng nhập: {ex.Message}");
+                Console.WriteLine($"Lỗi khi tải thông tin đăng nhập: {ex.Message}" + Environment.NewLine);
             }
     
             return (null, null,null); // Trả về null nếu không tải được
         }
 
+        public static List<string> CheckGit()
+        {
+            List<string> logMessages = new List<string>();
+            
+            if (IsGitInstalled(logMessages) && IsGitInPath(logMessages))
+            {
+                logMessages.Add("Git is fully installed and available in the PATH." + Environment.NewLine);
+            }
+            else
+            {
+                logMessages.Add("Git is not fully installed or not available in the PATH." + Environment.NewLine);
+            }
+
+            return logMessages;
+        }
+
+        private static bool IsGitInstalled(List<string> logMessages)
+        {
+            try
+            {
+                var processInfo = new ProcessStartInfo()
+                {
+                    FileName = "git",
+                    Arguments = "--version",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (var process = Process.Start(processInfo))
+                {
+                    string output = process.StandardOutput.ReadToEnd();
+                    process.WaitForExit();
+
+                    // Nếu có đầu ra, nghĩa là Git đã được cài đặt
+                    if (process.ExitCode == 0)
+                    {
+                        logMessages.Add($"Git is installed: {output.Trim()}" + Environment.NewLine);
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logMessages.Add($"Error checking Git installation: {ex.Message}" + Environment.NewLine);
+            }
+
+            return false;
+        }
+
+        private static bool IsGitInPath(List<string> logMessages)
+        {
+            string pathVariable = Environment.GetEnvironmentVariable("PATH");
+
+            // Kiểm tra xem đường dẫn đến Git có trong biến môi trường PATH không
+            bool isInPath = pathVariable?.Contains("git") ?? false;
+
+            logMessages.Add(isInPath 
+                ? "Git is in the PATH environment variable." + Environment.NewLine 
+                : "Git is NOT in the PATH environment variable." + Environment.NewLine);
+
+            return isInPath;
+        }
 
         
 

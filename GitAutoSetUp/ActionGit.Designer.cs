@@ -53,6 +53,7 @@ namespace GitAutoSetUp
             this.btnPull = new System.Windows.Forms.Button();
             this.treeBranch = new System.Windows.Forms.ComboBox();
             this.btnauthen = new System.Windows.Forms.Button();
+            this.btnSsh = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -129,12 +130,12 @@ namespace GitAutoSetUp
             this.messiger.Name = "messiger";
             this.messiger.ReadOnly = true;
             this.messiger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.messiger.Size = new System.Drawing.Size(861, 233);
+            this.messiger.Size = new System.Drawing.Size(884, 233);
             this.messiger.TabIndex = 9;
             // 
             // btnpush
             // 
-            this.btnpush.Location = new System.Drawing.Point(786, 311);
+            this.btnpush.Location = new System.Drawing.Point(815, 311);
             this.btnpush.Name = "btnpush";
             this.btnpush.Size = new System.Drawing.Size(122, 45);
             this.btnpush.TabIndex = 10;
@@ -213,7 +214,7 @@ namespace GitAutoSetUp
             this.groupBox1.Controls.Add(this.txtRepo);
             this.groupBox1.Location = new System.Drawing.Point(47, 77);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(867, 217);
+            this.groupBox1.Size = new System.Drawing.Size(890, 217);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             // 
@@ -297,11 +298,25 @@ namespace GitAutoSetUp
             this.btnauthen.UseVisualStyleBackColor = true;
             this.btnauthen.Click += new System.EventHandler(this.btnauthen_Click);
             // 
+            // btnSsh
+            // 
+            this.btnSsh.AllowDrop = true;
+            this.btnSsh.AutoEllipsis = true;
+            this.btnSsh.Location = new System.Drawing.Point(864, 619);
+            this.btnSsh.Name = "btnSsh";
+            this.btnSsh.Size = new System.Drawing.Size(73, 35);
+            this.btnSsh.TabIndex = 23;
+            this.btnSsh.Text = "sshkey";
+            this.btnSsh.UseVisualStyleBackColor = true;
+            this.btnSsh.Click += new System.EventHandler(this.btnSsh_Click);
+            // 
             // ActionGit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(986, 633);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(986, 675);
+            this.Controls.Add(this.btnSsh);
             this.Controls.Add(this.btnauthen);
             this.Controls.Add(this.treeBranch);
             this.Controls.Add(this.btnPull);
@@ -322,6 +337,8 @@ namespace GitAutoSetUp
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button btnSsh;
 
         private System.Windows.Forms.Button btnauthen;
 

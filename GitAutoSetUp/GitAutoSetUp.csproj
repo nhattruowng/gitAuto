@@ -283,6 +283,12 @@
         <Compile Include="ActionGit.Designer.cs">
           <DependentUpon>ActionGit.cs</DependentUpon>
         </Compile>
+        <Compile Include="CheckGit.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CheckGit.Designer.cs">
+          <DependentUpon>CheckGit.cs</DependentUpon>
+        </Compile>
         <Compile Include="Form1.cs">
             <SubType>Form</SubType>
         </Compile>
@@ -299,6 +305,13 @@
         </Compile>
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="SSHkeyGenarator.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="SSHkeyGenarator.Designer.cs">
+          <DependentUpon>SSHkeyGenarator.cs</DependentUpon>
+        </Compile>
+        <Compile Include="SshKeyGenerator.cs" />
         <Compile Include="test.cs">
           <SubType>Form</SubType>
         </Compile>
@@ -307,6 +320,9 @@
         </Compile>
         <EmbeddedResource Include="ActionGit.resx">
           <DependentUpon>ActionGit.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CheckGit.resx">
+          <DependentUpon>CheckGit.cs</DependentUpon>
         </EmbeddedResource>
         <EmbeddedResource Include="Form1.resx">
           <DependentUpon>Form1.cs</DependentUpon>
@@ -323,6 +339,9 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
+        <EmbeddedResource Include="SSHkeyGenarator.resx">
+          <DependentUpon>SSHkeyGenarator.cs</DependentUpon>
+        </EmbeddedResource>
         <EmbeddedResource Include="test.resx">
           <DependentUpon>test.cs</DependentUpon>
         </EmbeddedResource>
